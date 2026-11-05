@@ -2,14 +2,12 @@ const express = require('express');
 
 const app = express();
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
-// Home Route
 app.get('/', (req, res) => {
     res.send('Welcome to Node.js CI/CD Demo Application!');
 });
 
-// Health Check Route
 app.get('/health', (req, res) => {
     res.json({
         status: 'success',
@@ -17,7 +15,11 @@ app.get('/health', (req, res) => {
     });
 });
 
-// Start Server
-app.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
-});
+// Start server only when running directly
+if (require.main === module) {
+    app.listen(PORT, () => {
+        console.log(`Server running at http://localhost:${PORT}`);
+    });
+}
+
+module.exports = app;
